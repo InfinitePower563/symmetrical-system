@@ -79,48 +79,4 @@ public class Frame extends JFrame {
 
         setVisible(true);
     }
-    private void adjustColumnWidths(JTable table) {
-        TableColumnModel columnModel = table.getColumnModel();
-
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            TableColumn tableColumn = columnModel.getColumn(column);
-            int headerWidth = getColumnHeaderWidth(table, column);
-            int preferredWidth = getMaxCellWidth(table, column, headerWidth);
-
-            tableColumn.setPreferredWidth(preferredWidth);
-            tableColumn.setCellRenderer(createCenteredCellRenderer());
-        }
-    }
-
-    private int getColumnHeaderWidth(JTable table, int column) {
-        TableColumnModel columnModel = table.getColumnModel();
-        TableColumn tableColumn = columnModel.getColumn(column);
-        TableCellRenderer headerRenderer = tableColumn.getHeaderRenderer();
-
-        if (headerRenderer == null) {
-            headerRenderer = table.getTableHeader().getDefaultRenderer();
-        }
-
-        Object headerValue = tableColumn.getHeaderValue();
-        Component headerComponent = headerRenderer.getTableCellRendererComponent(table, headerValue, false, false, -1, column);
-        return headerComponent.getPreferredSize().width + table.getIntercellSpacing().width;
-    }
-
-    private int getMaxCellWidth(JTable table, int column, int headerWidth) {
-        int maxWidth = headerWidth;
-
-        for (int row = 0; row < table.getRowCount(); row++) {
-            TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
-            Component cellComponent = table.prepareRenderer(cellRenderer, row, column);
-            int cellWidth = cellComponent.getPreferredSize().width + table.getIntercellSpacing().width;
-            maxWidth = Math.max(maxWidth, cellWidth);
-        }
-
-        return maxWidth;
-    }
-    private TableCellRenderer createCenteredCellRenderer() {
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
-        return renderer;
-    }
 }
